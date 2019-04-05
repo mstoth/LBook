@@ -7,12 +7,20 @@
 //
 
 import Cocoa
+import CloudKit
+import CoreData
+
 
 class ViewController: NSViewController {
 
+    @objc dynamic var context:NSManagedObjectContext? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let delegate = NSApplication.shared.delegate as! AppDelegate
+        self.context = delegate.persistentContainer.viewContext
+        // let student = Student(context: context)
+        
         // Do any additional setup after loading the view.
     }
 
@@ -22,6 +30,12 @@ class ViewController: NSViewController {
         }
     }
 
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        if segue.identifier == "lessonSegue" {
+            let c = segue.destinationController as! LessonViewController
+            c.context = context
+        }
+    }
 
 }
 
